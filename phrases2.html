@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Уверенность 61–70 | English Flashcards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f0f2f5;
+            --card-bg: #ffffff;
+            --accent: #1e3a5f;
+            --accent-light: #4a90a4;
+            --text: #1a1a1a;
+            --text-muted: #5a6a7a;
+            --shadow: rgba(30,58,95,0.08);
+            --shadow-hover: rgba(30,58,95,0.18);
+            --example-bg: rgba(74,144,164,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            background-image: radial-gradient(#d0d8e0 1px, transparent 1px);
+            background-size: 28px 28px;
+            color: var(--text);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 920px; margin: 0 auto; }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+        }
+
+        .progress-container {
+            background: #d0d8e0;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            max-width: 400px;
+            margin: 0 auto 32px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            width: 0%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+        }
+
+        .mode-toggle {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .mode-btn {
+            background: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 8px 18px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            perspective: 1000px;
+        }
+
+        .card-wrapper {
+            position: relative;
+            height: 280px;
+            cursor: pointer;
+            animation: fadeInUp 0.6s ease backwards;
+        }
+
+        .card-wrapper:nth-child(1) { animation-delay: 0.1s; }
+        .card-wrapper:nth-child(2) { animation-delay: 0.15s; }
+        .card-wrapper:nth-child(3) { animation-delay: 0.2s; }
+        .card-wrapper:nth-child(4) { animation-delay: 0.25s; }
+        .card-wrapper:nth-child(5) { animation-delay: 0.3s; }
+        .card-wrapper:nth-child(6) { animation-delay: 0.35s; }
+        .card-wrapper:nth-child(7) { animation-delay: 0.4s; }
+        .card-wrapper:nth-child(8) { animation-delay: 0.45s; }
+        .card-wrapper:nth-child(9) { animation-delay: 0.5s; }
+        .card-wrapper:nth-child(10) { animation-delay: 0.55s; }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 20px;
+            box-shadow: 0 4px 24px var(--shadow);
+        }
+
+        .card-wrapper:hover .card {
+            box-shadow: 0 12px 40px var(--shadow-hover);
+        }
+
+        .card-wrapper.flipped .card {
+            transform: rotateY(180deg);
+        }
+
+        .card-wrapper.learned .card-front {
+            background: linear-gradient(135deg, #e8f4f8 0%, #d0e8f0 100%);
+            border: 2px solid var(--accent-light);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 28px;
+            background: var(--card-bg);
+            border: 1px solid #d0d8e0;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(160deg, var(--accent) 0%, #2c4a6e 100%);
+            color: white;
+            border: none;
+            justify-content: flex-start;
+            padding-top: 32px;
+        }
+
+        .phrase-number {
+            position: absolute;
+            top: 16px;
+            left: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-light);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .card-back .phrase-number { color: rgba(255,255,255,0.5); }
+
+        .phrase-en {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.3;
+            color: var(--accent);
+        }
+
+        .card-back .phrase-en {
+            color: rgba(255,255,255,0.95);
+            font-size: 1.15rem;
+            margin-bottom: 4px;
+        }
+
+        .phrase-ru {
+            font-size: 1.15rem;
+            text-align: center;
+            line-height: 1.4;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .divider {
+            width: 40px;
+            height: 2px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+            margin-bottom: 16px;
+        }
+
+        .example-block {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 14px 16px;
+            width: 100%;
+            backdrop-filter: blur(4px);
+        }
+
+        .example-en {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: rgba(255,255,255,0.9);
+            font-style: italic;
+            margin-bottom: 6px;
+        }
+
+        .example-ru {
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .hint {
+            position: absolute;
+            bottom: 16px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+
+        .card-back .hint {
+            color: rgba(255,255,255,0.4);
+            bottom: 14px;
+        }
+
+        .check-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-light);
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .check-btn:hover { background: var(--accent-light); transform: scale(1.1); }
+        .check-btn.checked { background: var(--accent); border-color: var(--accent); }
+        .check-btn.checked::after { content: "✓"; color: white; font-weight: bold; font-size: 1rem; }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 50px;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #152d4a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--shadow-hover);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 1.8rem; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .card-wrapper { height: 260px; }
+            .card-back { padding: 24px 20px; padding-top: 28px; }
+            .phrase-en { font-size: 1.3rem; }
+            .card-back .phrase-en { font-size: 1.05rem; }
+            .phrase-ru { font-size: 1rem; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Уверенность</h1>
+            <p class="subtitle">61–70 | С примерами и контекстом</p>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="progress-text" id="progressText">0 из 10 выучено</div>
+
+            <div class="mode-toggle">
+                <button class="mode-btn active" onclick="setMode('all')">Все</button>
+                <button class="mode-btn" onclick="setMode('unlearned')">Невыученные</button>
+            </div>
+        </header>
+
+        <div class="cards-grid" id="cardsGrid"></div>
+
+        <div class="controls">
+            <button class="btn btn-secondary" onclick="flipAll()">Перевернуть все</button>
+            <button class="btn btn-primary" onclick="resetProgress()">Начать заново</button>
+        </div>
+    </div>
+
+    <script>
+        const phrases = [
+            { 
+                id: 61, 
+                en: "Absolutely", 
+                ru: "Безусловно",
+                exEn: "— Do you think he'll come? — Absolutely!",
+                exRu: "— Ты думаешь, он придёт? — Безусловно!"
+            },
+            { 
+                id: 62, 
+                en: "No doubt", 
+                ru: "Без сомнений",
+                exEn: "She's no doubt the best candidate for the job.",
+                exRu: "Она, без сомнений, лучший кандидат на эту работу."
+            },
+            { 
+                id: 63, 
+                en: "You nailed it", 
+                ru: "Ты справился отлично",
+                exEn: "Your presentation was perfect. You nailed it!",
+                exRu: "Твоя презентация была идеальной. Ты справился отлично!"
+            },
+            { 
+                id: 64, 
+                en: "Spot on", 
+                ru: "Точно; попал в точку",
+                exEn: "Your guess was spot on! That's exactly what happened.",
+                exRu: "Твоя догадка была точной! Это именно то, что произошло."
+            },
+            { 
+                id: 65, 
+                en: "I'm on it", 
+                ru: "Я уже занимаюсь этим",
+                exEn: "Don't worry about the report. I'm on it.",
+                exRu: "Не беспокойся об отчёте. Я уже занимаюсь этим."
+            },
+            { 
+                id: 66, 
+                en: "For sure", 
+                ru: "Конечно; точно",
+                exEn: "— Are you coming to the party? — For sure!",
+                exRu: "— Ты придёшь на вечеринку? — Конечно!"
+            },
+            { 
+                id: 67, 
+                en: "You can count on me", 
+                ru: "Можешь на меня рассчитывать",
+                exEn: "If you need help with moving, you can count on me.",
+                exRu: "Если тебе понадобится помощь с переездом, можешь на меня рассчитывать."
+            },
+            { 
+                id: 68, 
+                en: "Hands down", 
+                ru: "Безоговорочно; бесспорно",
+                exEn: "This is hands down the best pizza in town.",
+                exRu: "Это безоговорочно лучшая пицца в городе."
+            },
+            { 
+                id: 69, 
+                en: "I'm positive", 
+                ru: "Я уверен(а)",
+                exEn: "I'm positive I left my keys on the table.",
+                exRu: "Я уверен(а), что оставил(а) ключи на столе."
+            },
+            { 
+                id: 70, 
+                en: "100 percent", 
+                ru: "На все сто; полностью",
+                exEn: "I agree with you 100 percent on this decision.",
+                exRu: "Я полностью с тобой согласен в этом решении."
+            }
+        ];
+
+        let learned = new Set();
+        let currentMode = 'all';
+
+        function renderCards() {
+            const grid = document.getElementById('cardsGrid');
+            grid.innerHTML = '';
+
+            phrases.forEach((phrase, index) => {
+                if (currentMode === 'unlearned' && learned.has(phrase.id)) return;
+
+                const wrapper = document.createElement('div');
+                wrapper.className = `card-wrapper ${learned.has(phrase.id) ? 'learned' : ''}`;
+                wrapper.dataset.id = phrase.id;
+                wrapper.style.animationDelay = `${index * 0.05}s`;
+
+                wrapper.innerHTML = `
+                    <div class="card">
+                        <div class="card-face card-front">
+                            <span class="phrase-number">${phrase.id}</span>
+                            <button class="check-btn ${learned.has(phrase.id) ? 'checked' : ''}" 
+                                    onclick="toggleLearned(event, ${phrase.id})"></button>
+                            <div class="phrase-en">${phrase.en}</div>
+                            <span class="hint">Нажмите, чтобы перевернуть</span>
+                        </div>
+                        <div class="card-face card-back">
+                            <span class="phrase-number">${phrase.id}</span>
+                            <div class="phrase-en">${phrase.en}</div>
+                            <div class="phrase-ru">${phrase.ru}</div>
+                            <div class="divider"></div>
+                            <div class="example-block">
+                                <div class="example-en">${phrase.exEn}</div>
+                                <div class="example-ru">${phrase.exRu}</div>
+                            </div>
+                            <span class="hint">Нажмите, чтобы вернуть</span>
+                        </div>
+                    </div>
+                `;
+
+                wrapper.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('check-btn')) {
+                        wrapper.classList.toggle('flipped');
+                    }
+                });
+
+                grid.appendChild(wrapper);
+            });
+
+            updateProgress();
+        }
+
+        function toggleLearned(event, id) {
+            event.stopPropagation();
+            if (learned.has(id)) {
+                learned.delete(id);
+            } else {
+                learned.add(id);
+            }
+            renderCards();
+        }
+
+        function updateProgress() {
+            const percent = (learned.size / phrases.length) * 100;
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('progressText').textContent = 
+                `${learned.size} из ${phrases.length} выучено`;
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderCards();
+        }
+
+        function flipAll() {
+            document.querySelectorAll('.card-wrapper').forEach(wrapper => {
+                wrapper.classList.toggle('flipped');
+            });
+        }
+
+        function resetProgress() {
+            learned.clear();
+            currentMode = 'all';
+            document.querySelectorAll('.mode-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === 0);
+            });
+            renderCards();
+        }
+
+        renderCards();
+    </script>
+</body>
+</html>
