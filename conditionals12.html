@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Conditional Quiz</title>
+<style>
+body { font-family: Arial; padding: 20px; }
+.question { margin-bottom: 20px; }
+button { margin: 5px; }
+.answer { display: none; color: green; }
+</style>
+<script>
+function showAnswer(id) {
+  document.getElementById(id).style.display = 'inline';
+}
+
+function checkAnswer(select, correct) {
+  if (select.value === correct) {
+    alert('Правильно');
+  } else {
+    alert('Неправильно');
+  }
+}
+</script>
+</head>
+<body>
+
+<h2>Task 1 (English): Choose correct verb form</h2>
+
+<div class="question">
+If I ___ (be) rich, I would travel the world.
+<button onclick="showAnswer('a1')">Check</button>
+<span id="a1" class="answer">were</span>
+</div>
+
+<div class="question">
+If she ___ (study) harder, she would pass the exam.
+<button onclick="showAnswer('a2')">Check</button>
+<span id="a2" class="answer">studied</span>
+</div>
+
+<div class="question">
+If they ___ (have) time, they will come.
+<button onclick="showAnswer('a3')">Check</button>
+<span id="a3" class="answer">have</span>
+</div>
+
+<h2>Task 2 (Українською): Обери тип умовного речення</h2>
+
+<div class="question">
+Якщо я буду вчитися, я складу іспит.
+<select onchange="checkAnswer(this, 'first')">
+<option value="">--обери--</option>
+<option value="first">Перший тип</option>
+<option value="second">Другий тип</option>
+</select>
+</div>
+
+<div class="question">
+Якби я мав гроші, я купив би машину.
+<select onchange="checkAnswer(this, 'second')">
+<option value="">--обери--</option>
+<option value="first">Перший тип</option>
+<option value="second">Другий тип</option>
+</select>
+</div>
+
+<div class="question">
+Якщо вона прийде, ми почнемо.
+<select onchange="checkAnswer(this, 'first')">
+<option value="">--обери--</option>
+<option value="first">Перший тип</option>
+<option value="second">Другий тип</option>
+</select>
+</div>
+
+</body>
+</html>
