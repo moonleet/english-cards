@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar Quiz: Action vs State</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f4f9; padding: 20px; color: #333; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .question { margin-bottom: 20px; padding: 15px; border: 1px solid #eee; border-radius: 5px; }
+        .options button { display: block; width: 100%; padding: 10px; margin: 5px 0; cursor: pointer; border: 1px solid #ddd; border-radius: 5px; background: #fff; transition: 0.3s; }
+        .options button:hover { background: #e1f5fe; }
+        .feedback { font-weight: bold; margin-top: 10px; display: none; }
+        .correct { color: #27ae60; }
+        .wrong { color: #e74c3c; }
+        #score { margin-top: 20px; font-size: 1.2em; text-align: center; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Stop using "am/is/are" everywhere! 🛑</h2>
+    <p>Обери правильний варіант. Пам'ятай: якщо є дієслово-дія, "be" не потрібне!</p>
+    
+    <div id="quiz-space"></div>
+    <div id="score"></div>
+</div>
+
+<script>
+    const questions = [
+        { q: "Я (ходжу) до школи щодня.", options: ["I am go to school", "I go to school"], correct: 1, note: "Тут дієслово 'go' вже є. 'Am' зайве!" },
+        { q: "Він (є) втомлений.", options: ["He is tired", "He tired"], correct: 0, note: "Втома - це стан. Потрібне 'is'." },
+        { q: "Вони (працюють) зараз.", options: ["They are work", "They are working"], correct: 1, note: "В Continuous ми додаємо -ing до дієслова." },
+        { q: "Ти (любиш) піцу?", options: ["Are you like pizza?", "Do you like pizza?"], correct: 1, note: "Питання до дії 'like' робимо через 'Do'." },
+        { q: "Вчора я (був) вдома.", options: ["I was at home", "I was be at home"], correct: 0, note: "Was — це вже і є форма 'be'. Друге дієслово не треба." },
+        { q: "Ми не (дивимось) телевізор.", options: ["We don't watch TV", "We aren't watch TV"], correct: 0, note: "Заперечення дії — 'don't'." }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function renderQuestion() {
+        const qSpace = document.getElementById('quiz-space');
+        if (current < questions.length) {
+            const item = questions[current];
+            qSpace.innerHTML = `
+                <div class="question">
+                    <p><strong>${current + 1}. ${item.q}</strong></p>
+                    <div class="options">
+                        ${item.options.map((opt, i) => `<button onclick="checkAnswer(${i})">${opt}</button>`).join('')}
+                    </div>
+                    <div id="feedback" class="feedback"></div>
+                </div>
+            `;
+        } else {
+            showScore();
+        }
+    }
+
+    window.checkAnswer = function(idx) {
+        const feedback = document.getElementById('feedback');
+        feedback.style.display = "block";
+        if (idx === questions[current].correct) {
+            feedback.innerHTML = "✅ Правильно! " + questions[current].note;
+            feedback.className = "feedback correct";
+            score++;
+        } else {
+            feedback.innerHTML = "❌ Помилка. " + questions[current].note;
+            feedback.className = "feedback wrong";
+        }
+        setTimeout(() => {
+            current++;
+            renderQuestion();
+        }, 3000);
+    }
+
+    function showScore() {
+        const scoreDiv = document.getElementById('score');
+        scoreDiv.style.display = "block";
+        scoreDiv.innerHTML = `Квіз завершено! Твій результат: ${score} з ${questions.length}`;
+        document.getElementById('quiz-space').style.display = "none";
+    }
+
+    renderQuestion();
+</script>
+
+</body>
+</html>
