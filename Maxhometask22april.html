@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar B1+: Action vs State</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; padding: 40px 20px; line-height: 1.6; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h1 { color: #202124; text-align: center; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #1a73e8; font-weight: bold; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; }
+        .quiz-item { margin-bottom: 25px; padding: 15px; border-bottom: 1px dotted #ccc; transition: 0.3s; }
+        .question-text { font-weight: 600; font-size: 1.1em; color: #3c4043; display: block; margin-bottom: 12px; }
+        .options { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        label { padding: 12px; border: 2px solid #f1f3f4; border-radius: 10px; cursor: pointer; display: flex; align-items: center; }
+        label:hover { background-color: #f1f3f4; border-color: #dadce0; }
+        input[type="radio"] { margin-right: 15px; transform: scale(1.2); }
+        button#submit-btn { display: block; width: 100%; padding: 18px; background: #202124; color: white; border: none; border-radius: 10px; font-size: 1.2em; font-weight: bold; cursor: pointer; margin-top: 40px; transition: 0.3s; }
+        button#submit-btn:hover { background: #3c4043; transform: translateY(-2px); }
+        #result-area { margin-top: 30px; padding: 25px; border-radius: 10px; display: none; text-align: center; font-size: 1.4em; }
+        .correct-ans { background: #e6f4ea; color: #137333; border: 1px solid #137333; }
+        .wrong-ans { background: #fce8e6; color: #c5221f; border: 1px solid #c5221f; }
+        .explanation { font-size: 0.95em; margin-top: 10px; color: #5f6368; font-style: italic; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Level Up Your English 🚀</h1>
+    <p class="subtitle">Home Practice: No More Basic Mistakes</p>
+
+    <div id="quiz-container"></div>
+
+    <button id="submit-btn" onclick="checkQuiz()">Здати роботу на перевірку</button>
+    <div id="result-area"></div>
+</div>
+
+<script>
+    const questions = [
+        { q: "Зараз я шукаю нову роботу.", options: ["I am looking for a new job now", "I look for a new job now"], correct: 0, why: "Дія відбувається зараз (Process) — потрібні і 'am', і '-ing'." },
+        { q: "Твоя ідея звучить чудово.", options: ["Your idea is sounds great", "Your idea sounds great"], correct: 1, why: "Sounds — це вже дієслово. 'Is' не потрібне." },
+        { q: "Я дуже зацікавлений у цьому проєкті.", options: ["I am very interested in this project", "I very interested in this project"], correct: 0, why: "Interested — це стан/прикметник. Обов'язково додаємо 'am'." },
+        { q: "Він ніколи не погоджується зі мною.", options: ["He is never agree with me", "He never agrees with me"], correct: 1, why: "Agree — це дія (що робити?). У Present Simple 'is' зайве." },
+        { q: "Чому ти такий впевнений у цьому?", options: ["Why are you so sure about it?", "Why do you so sure about it?"], correct: 0, why: "Sure — це прикметник (який?), а не дія. Використовуй 'are'." },
+        { q: "Ми не очікували такого результату.", options: ["We weren't expect such a result", "We didn't expect such a result"], correct: 1, why: "Очікувати — це дія. У минулому часі заперечуємо через 'didn't'." },
+        { q: "Вона зараз у відпустці?", options: ["Is she on holiday now?", "Does she on holiday now?"], correct: 0, why: "On holiday — це обставина місця/стану. Потрібне 'Is'." },
+        { q: "Я обіцяю, що допоможу тобі.", options: ["I am promise I will help you", "I promise I will help you"], correct: 1, why: "Promise — дієслово-дія. 'Am' тут помилка." },
+        { q: "Це залежить від погоди.", options: ["It is depends on the weather", "It depends on the weather"], correct: 1, why: "Depend — дієслово. 'Is' ставити не можна." },
+        { q: "Ти мене чуєш?", options: ["Do you hear me?", "Are you hear me?"], correct: 0, why: "Hear — дієслово сприйняття. Питання будуємо через 'Do'." },
+        { q: "Ми дуже розчаровані сервісом.", options: ["We are very disappointed with the service", "We very disappointed with the service"], correct: 0, why: "Disappointed — стан (який?). Потрібно 'are'." },
+        { q: "Мій брат зазвичай приходить додому пізно.", options: ["My brother is usually comes home late", "My brother usually comes home late"], correct: 1, why: "Comes — дія. Поруч із ним 'is' не вживається." },
+        { q: "Це не здається правильним рішенням.", options: ["It doesn't seem like the right decision", "It isn't seem like the right decision"], correct: 0, why: "Seem — дієслово. Заперечуємо через 'doesn't'." },
+        { q: "Ви готові замовити?", options: ["Are you ready to order?", "Do you ready to order?"], correct: 0, why: "Ready — прикметник. 'Are' виступає зв'язкою." },
+        { q: "Я намагаюся зосередитися, тихіше!", options: ["I'm trying to concentrate", "I try to concentrate"], correct: 0, why: "Дія в момент мовлення. Конструкція be + ing." },
+        { q: "Скільки це коштує?", options: ["How much is it cost?", "How much does it cost?"], correct: 1, why: "Cost — дієслово (коштувати). Потрібне допоміжне 'does'." },
+        { q: "Він не був здивований новинами.", options: ["He didn't surprised by the news", "He wasn't surprised by the news"], correct: 1, why: "Surprised — опис стану. У минулому — 'wasn't'." },
+        { q: "Я з нетерпінням чекаю на твою відповідь.", options: ["I'm looking forward to your reply", "I look forward to your reply"], correct: 0, why: "Стала фраза в Continuous для актуального моменту." },
+        { q: "Твій англійська стає кращою.", options: ["Your English is getting better", "Your English gets better"], correct: 0, why: "Процес зміни стану — використовуємо Continuous." },
+        { q: "Вони відповідальні за цей проєкт.", options: ["They are responsible for this project", "They responsible for this project"], correct: 0, why: "Responsible — прикметник. Без дієслова 'are' речення не існує." }
+    ];
+
+    const container = document.getElementById('quiz-container');
+
+    questions.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'quiz-item';
+        div.innerHTML = `
+            <span class="question-text">${index + 1}. ${item.q}</span>
+            <div class="options">
+                <label><input type="radio" name="q${index}" value="0"> ${item.options[0]}</label>
+                <label><input type="radio" name="q${index}" value="1"> ${item.options[1]}</label>
+            </div>
+            <div id="explain${index}" class="explanation"></div>
+        `;
+        container.appendChild(div);
+    });
+
+    function checkQuiz() {
+        let score = 0;
+        let allAnswered = true;
+
+        questions.forEach((item, index) => {
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            const explainDiv = document.getElementById(`explain${index}`);
+            
+            if (!selected) {
+                allAnswered = false;
+                return;
+            }
+
+            explainDiv.style.display = "block";
+            explainDiv.innerHTML = `<strong>Пояснення:</strong> ${item.why}`;
+
+            if (parseInt(selected.value) === item.correct) {
+                score++;
+                selected.parentElement.style.background = "#e6f4ea";
+                selected.parentElement.style.borderColor = "#137333";
+            } else {
+                selected.parentElement.style.background = "#fce8e6";
+                selected.parentElement.style.borderColor = "#c5221f";
+            }
+        });
+
+        if (!allAnswered) {
+            alert("Будь ласка, дай відповіді на всі запитання!");
+            return;
+        }
+
+        const resultArea = document.getElementById('result-area');
+        resultArea.style.display = "block";
+        resultArea.innerHTML = `Клас! Твій результат: ${score} з ${questions.length}<br><small>${score === 20 ? "Perfect! Ти подолав вірус 'To Be'!" : "Переглянь пояснення до помилок нижче."}</small>`;
+        resultArea.className = score > 16 ? "result-area correct-ans" : "result-area wrong-ans";
+        window.scrollTo(0, 0);
+    }
+</script>
+
+</body>
+</html>
