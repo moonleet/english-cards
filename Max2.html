@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar: The "To Be" Trap</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; padding: 40px 20px; line-height: 1.6; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        h1 { color: #1a73e8; text-align: center; margin-bottom: 10px; }
+        p.desc { text-align: center; color: #5f6368; margin-bottom: 30px; }
+        .quiz-item { margin-bottom: 25px; padding: 15px; border-bottom: 1px solid #eee; }
+        .question-text { font-weight: 600; font-size: 1.1em; margin-bottom: 10px; display: block; }
+        .options { display: flex; flex-direction: column; gap: 8px; }
+        label { padding: 10px; border: 1px solid #dfe1e5; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        label:hover { background-color: #f8f9fa; }
+        input[type="radio"] { margin-right: 10px; }
+        button#submit-btn { display: block; width: 100%; padding: 15px; background: #1a73e8; color: white; border: none; border-radius: 8px; font-size: 1.1em; cursor: pointer; margin-top: 30px; }
+        button#submit-btn:hover { background: #1557b0; }
+        #result-area { margin-top: 30px; padding: 20px; border-radius: 8px; display: none; text-align: center; font-size: 1.3em; font-weight: bold; }
+        .correct-ans { color: #27ae60; background: #e8f5e9; }
+        .wrong-ans { color: #d93025; background: #fce8e6; }
+        .explanation { font-size: 0.9em; font-weight: normal; margin-top: 5px; color: #555; display: block; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Stop the "Am/Is/Are" Virus! 🛑</h1>
+    <p class="desc">Обери правильний варіант. Пам'ятай: якщо є дієслово-дія, допоміжне "be" не ставиться у Present Simple!</p>
+
+    <div id="quiz-container">
+        <!-- Questions will be generated here -->
+    </div>
+
+    <button id="submit-btn" onclick="checkQuiz()">Перевірити результат</button>
+    <div id="result-area"></div>
+</div>
+
+<script>
+    const questions = [
+        { q: "Я (живу) в Києві.", options: ["I am live in Kyiv", "I live in Kyiv"], correct: 1, why: "Live — це дієслово. 'Am' тут зайве." },
+        { q: "Він (є) дуже розумний.", options: ["He is very smart", "He very smart"], correct: 0, why: "Smart — прикметник. Потрібне 'is' для зв'язки." },
+        { q: "Ми (не граємо) у футбол по вівторках.", options: ["We aren't play football", "We don't play football"], correct: 1, why: "Для заперечення дії використовуємо don't." },
+        { q: "Ти (слухаєш) мене?", options: ["Are you listen to me?", "Are you listening to me?"], correct: 1, why: "Якщо є 'Are', то має бути закінчення -ing (Continuous)." },
+        { q: "Вона (працює) в банку.", options: ["She works in a bank", "She is works in a bank"], correct: 0, why: "Дія 'works' не потребує 'is' поруч." },
+        { q: "Я (втомився) зараз.", options: ["I am tired", "I tired"], correct: 0, why: "Tired — це стан. Потрібно 'am'." },
+        { q: "Вони (були) вчора в кіно.", options: ["They were in the cinema", "They were be in the cinema"], correct: 0, why: "'Were' — це вже форма 'be' у минулому." },
+        { q: "Чому ти (смієшся)?", options: ["Why do you laugh?", "Why are you laugh?"], correct: 0, why: "Питання до дії через 'do'." },
+        { q: "Це (не є) важливо.", options: ["It isn't important", "It doesn't important"], correct: 0, why: "Important — не дія. Потрібно 'is not'." },
+        { q: "Я (завжди допомагаю) мамі.", options: ["I am always help mom", "I always help mom"], correct: 1, why: "Звичайна регулярна дія." },
+        { q: "Ти (готовий)?", options: ["Are you ready?", "Do you ready?"], correct: 0, why: "Ready — це стан (який?), а не дія (що робити?)." },
+        { q: "Він (не прийшов) вчора.", options: ["He didn't come", "He wasn't come"], correct: 0, why: "Заперечення дії у минулому — didn't." },
+        { q: "Вони (є) моїми друзями.", options: ["They are my friends", "They my friends"], correct: 0, why: "Речення без дієслова в англійській потребує 'be'." },
+        { q: "Ми (йдемо) додому зараз.", options: ["We go home now", "We are going home now"], correct: 1, why: "Дія в момент мовлення — am/is/are + ing." },
+        { q: "Я (не знаю) відповіді.", options: ["I'm not know", "I don't know"], correct: 1, why: "Know — це дієслово. Використовуй don't." },
+        { q: "Де ти (був)?", options: ["Where did you were?", "Where were you?"], correct: 1, why: "Дієслово 'be' саме виноситься наперед у питаннях." },
+        { q: "Вона (красива).", options: ["She is beautiful", "She beautiful"], correct: 0, why: "Коли описуємо зовнішність прикметником, треба 'is'." },
+        { q: "Ти (хочеш) пити?", options: ["Do you want to drink?", "Are you want to drink?"], correct: 0, why: "Want — це дія. Потрібно 'Do'." },
+        { q: "Сонце (світить) яскраво (взагалі).", options: ["The sun shines brightly", "The sun is shines brightly"], correct: 0, why: "Факт/загальна дія — Present Simple без 'is'." },
+        { q: "Я (щасливий) бачити тебе.", options: ["I am happy to see you", "I happy to see you"], correct: 0, why: "Happy — прикметник, ставимо 'am'." }
+    ];
+
+    const container = document.getElementById('quiz-container');
+
+    questions.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'quiz-item';
+        div.innerHTML = `
+            <span class="question-text">${index + 1}. ${item.q}</span>
+            <div class="options">
+                <label><input type="radio" name="q${index}" value="0"> ${item.options[0]}</label>
+                <label><input type="radio" name="q${index}" value="1"> ${item.options[1]}</label>
+            </div>
+            <div id="explain${index}" class="explanation" style="display:none"></div>
+        `;
+        container.appendChild(div);
+    });
+
+    function checkQuiz() {
+        let score = 0;
+        questions.forEach((item, index) => {
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            const explainDiv = document.getElementById(`explain${index}`);
+            explainDiv.style.display = "block";
+            explainDiv.innerText = "💡 " + item.why;
+
+            if (selected && parseInt(selected.value) === item.correct) {
+                score++;
+                selected.parentElement.style.color = "#27ae60";
+                selected.parentElement.style.fontWeight = "bold";
+            } else if (selected) {
+                selected.parentElement.style.color = "#d93025";
+                selected.parentElement.style.fontWeight = "bold";
+            }
+        });
+
+        const resultArea = document.getElementById('result-area');
+        resultArea.style.display = "block";
+        resultArea.innerHTML = `Твій результат: ${score} з ${questions.length}`;
+        resultArea.className = score > 15 ? "correct-ans" : "wrong-ans";
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+</script>
+
+</body>
+</html>
