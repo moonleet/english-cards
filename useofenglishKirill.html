@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>НМТ English Practice</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 20px auto; padding: 20px; background-color: #f4f4f9; }
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; }
+        .text-block { font-size: 18px; margin-bottom: 30px; border-left: 4px solid #3498db; padding-left: 20px; }
+        .question { margin-bottom: 20px; padding: 15px; border-bottom: 1px solid #eee; }
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        label { background: #f9f9f9; padding: 10px; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        label:hover { background: #e8f4fd; }
+        input[type="radio"] { margin-right: 10px; }
+        button { display: block; width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 5px; font-size: 18px; cursor: pointer; margin-top: 20px; }
+        button:hover { background: #219150; }
+        #result { margin-top: 20px; font-weight: bold; text-align: center; font-size: 20px; color: #e67e22; }
+        .correct { color: #27ae60; }
+        .wrong { color: #e74c3c; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>NMT English: Grammar & Vocabulary</h1>
+    
+    <div class="text-block">
+        The Great Barrier Reef is the world's largest coral reef system. It <b>(1) ____</b> of over 2,900 individual reefs. 
+        It is so large that it can be <b>(2) ____</b> from outer space. 
+        However, the reef is currently <b>(3) ____</b> threat due to climate change. 
+        Scientists <b>(4) ____</b> to find ways to protect this natural wonder for years. 
+        If we don't act now, future generations <b>(5) ____</b> able to see its beauty.
+    </div>
+
+    <form id="quizForm">
+        <!-- Question 1 -->
+        <div class="question">
+            <strong>(1)</strong>
+            <div class="options">
+                <label><input type="radio" name="q1" value="A"> A) consists</label>
+                <label><input type="radio" name="q1" value="B"> B) consist</label>
+                <label><input type="radio" name="q1" value="C"> C) is consisting</label>
+                <label><input type="radio" name="q1" value="D"> D) has consisted</label>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question">
+            <strong>(2)</strong>
+            <div class="options">
+                <label><input type="radio" name="q2" value="A"> A) see</label>
+                <label><input type="radio" name="q2" value="B"> B) saw</label>
+                <label><input type="radio" name="q2" value="C"> C) seen</label>
+                <label><input type="radio" name="q2" value="D"> D) seeing</label>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question">
+            <strong>(3)</strong>
+            <div class="options">
+                <label><input type="radio" name="q3" value="A"> A) in</label>
+                <label><input type="radio" name="q3" value="B"> B) under</label>
+                <label><input type="radio" name="q3" value="C"> C) with</label>
+                <label><input type="radio" name="q3" value="D"> D) by</label>
+            </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question">
+            <strong>(4)</strong>
+            <div class="options">
+                <label><input type="radio" name="q4" value="A"> A) are trying</label>
+                <label><input type="radio" name="q4" value="B"> B) tried</label>
+                <label><input type="radio" name="q4" value="C"> C) have been trying</label>
+                <label><input type="radio" name="q4" value="D"> D) will try</label>
+            </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="question">
+            <strong>(5)</strong>
+            <div class="options">
+                <label><input type="radio" name="q5" value="A"> A) won't be</label>
+                <label><input type="radio" name="q5" value="B"> B) wouldn't be</label>
+                <label><input type="radio" name="q5" value="C"> C) aren't</label>
+                <label><input type="radio" name="q5" value="D"> D) haven't been</label>
+            </div>
+        </div>
+
+        <button type="button" onclick="checkQuiz()">Проверить результат</button>
+    </form>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    function checkQuiz() {
+        const answers = { q1: 'A', q2: 'C', q3: 'B', q4: 'C', q5: 'A' };
+        let score = 0;
+        let total = 5;
+        
+        for (let key in answers) {
+            const selected = document.querySelector(`input[name="${key}"]:checked`);
+            if (selected && selected.value === answers[key]) {
+                score++;
+            }
+        }
+        
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = `Твой результат: ${score} из ${total}<br>`;
+        
+        if (score === total) {
+            resultDiv.innerHTML += '<span class="correct">Отлично! Ты готов к НМТ!</span>';
+        } else {
+            resultDiv.innerHTML += '<span class="wrong">Есть ошибки. Правильные ответы: 1-A, 2-C, 3-B, 4-C, 5-A</span>';
+        }
+    }
+</script>
+
+</body>
+</html>
