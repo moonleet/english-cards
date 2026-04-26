@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar Final Challenge</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f7f6; color: #333; padding: 20px; }
+        .container { max-width: 850px; margin: auto; background: white; padding: 40px; border-radius: 12px; shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #1a237e; margin-bottom: 5px; }
+        p.intro { text-align: center; color: #666; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 20px; }
+        .quiz-item { margin-bottom: 30px; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fafafa; }
+        .q-text { font-weight: bold; font-size: 1.1em; display: block; margin-bottom: 15px; color: #2c3e50; }
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        label { background: white; border: 1px solid #ccc; padding: 12px; border-radius: 6px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; }
+        label:hover { border-color: #1a237e; background: #f0f2ff; }
+        input[type="radio"] { margin-right: 12px; }
+        button#check-btn { display: block; width: 100%; padding: 20px; background: #1a237e; color: white; border: none; border-radius: 8px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 20px; }
+        button#check-btn:hover { background: #283593; transform: scale(1.01); }
+        #final-result { margin-top: 30px; padding: 25px; border-radius: 8px; display: none; }
+        .score-box { font-size: 1.5em; font-weight: bold; text-align: center; margin-bottom: 15px; }
+        .mistakes-box { color: #c62828; font-size: 1.1em; line-height: 1.6; }
+        .selected-wrong { border-color: #ef5350 !important; background: #ffebee !important; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Final Grammar Challenge 🎓</h1>
+    <p class="intro">Перевір свої знання часів та допоміжних дієслів. Будь уважним — варіанти дуже схожі!</p>
+
+    <div id="quiz-content"></div>
+
+    <button id="check-btn" onclick="processResults()">Завершити тест та перевірити</button>
+
+    <div id="final-result">
+        <div id="score-display" class="score-box"></div>
+        <div id="mistakes-list" class="mistakes-box"></div>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        { q: "Вона зазвичай не п'є каву вранці.", options: ["She is usually not drink coffee", "She doesn't usually drink coffee", "She isn't usually drink coffee", "She usually doesn't drinks coffee"], correct: 1 },
+        { q: "Ти бачив його вчора в парку?", options: ["Did you see him yesterday?", "Were you see him yesterday?", "Did you saw him yesterday?", "Was you see him yesterday?"], correct: 0 },
+        { q: "Завтра о п'ятій я буду працювати.", options: ["I will work tomorrow at five", "I will be working tomorrow at five", "I am work tomorrow at five", "I will working tomorrow at five"], correct: 1 },
+        { q: "Вони зараз обідають, передзвони пізніше.", options: ["They have lunch now", "They are have lunch now", "They are having lunch now", "They having lunch now"], correct: 2 },
+        { q: "Він не був вдома, коли я прийшов.", options: ["He didn't was at home", "He wasn't at home", "He wasn't be at home", "He didn't be at home"], correct: 1 },
+        { q: "Чому ти плакав, коли я зайшов у кімнату?", options: ["Why did you cry?", "Why were you crying?", "Why was you crying?", "Why did you crying?"], correct: 1 },
+        { q: "Я допоможу тобі з цим завтра.", options: ["I am help you with this tomorrow", "I will be help you with this", "I will help you with this tomorrow", "I am going help you"], correct: 2 },
+        { q: "Ви часто ходите в кіно?", options: ["Are you often go to the cinema?", "Do you often go to the cinema?", "Do you often going to the cinema?", "Is you often go to the cinema?"], correct: 1 },
+        { q: "Вона була втомлена після роботи.", options: ["She was tired after work", "She was tire after work", "She did be tired after work", "She were tired after work"], correct: 0 },
+        { q: "Ми не дивилися цей фільм минулого тижня.", options: ["We weren't watch this film", "We didn't watched this film", "We didn't watch this film", "We weren't watching this film"], correct: 2 },
+        { q: "Що ти робитимеш у цей час наступної неділі?", options: ["What will you do next Sunday?", "What will you be doing next Sunday?", "What do you do next Sunday?", "What are you doing next Sunday?"], correct: 1 },
+        { q: "Я не знаю, де він зараз.", options: ["I am not know where he is", "I don't know where he is", "I don't know where is he", "I am not knowing where he is"], correct: 1 },
+        { q: "Ми розмовляли по телефону, коли вимкнули світло.", options: ["We talked on the phone", "We were talking on the phone", "We was talking on the phone", "We were talk on the phone"], correct: 1 },
+        { q: "Він не прийде на вечірку.", options: ["He won't come to the party", "He isn't come to the party", "He won't be come to the party", "He doesn't come to the party"], correct: 0 },
+        { q: "Ти впевнений у своїй відповіді?", options: ["Do you sure about your answer?", "Are you sure about your answer?", "Are you sured about your answer?", "Is you sure about your answer?"], correct: 1 },
+        { q: "Вони живуть у цьому місті вже 10 років (факт).", options: ["They are live in this city", "They live in this city", "They are living in this city", "They lives in this city"], correct: 1 },
+        { q: "Хтось стукає у двері прямо зараз.", options: ["Someone knocks at the door", "Someone is knock at the door", "Someone is knocking at the door", "Someone are knocking at the door"], correct: 2 },
+        { q: "Він робив домашнє завдання весь вечір вчора.", options: ["He was doing homework all evening", "He did homework all evening", "He was did homework all evening", "He did be doing homework"], correct: 0 },
+        { q: "Ви будете вдома ввечері?", options: ["Will you be at home?", "Will you at home?", "Are you will be at home?", "Do you will be at home?"], correct: 0 },
+        { q: "Вона ніколи не запізнюється.", options: ["She is never late", "She never is late", "She does never late", "She is never lately"], correct: 0 }
+    ];
+
+    const container = document.getElementById('quiz-content');
+
+    questions.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.className = 'quiz-item';
+        div.id = `item-${idx}`;
+        div.innerHTML = `
+            <span class="q-text">${idx + 1}. ${item.q}</span>
+            <div class="options">
+                ${item.options.map((opt, i) => `
+                    <label><input type="radio" name="q${idx}" value="${i}"> ${opt}</label>
+                `).join('')}
+            </div>
+        `;
+        container.appendChild(div);
+    });
+
+    function processResults() {
+        let score = 0;
+        let mistakes = [];
+        let unanswered = false;
+
+        questions.forEach((item, idx) => {
+            const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+            
+            if (!selected) {
+                unanswered = true;
+                document.getElementById(`item-${idx}`).style.borderColor = "#ffa726";
+            } else {
+                document.getElementById(`item-${idx}`).style.borderColor = "#e0e0e0";
+                if (parseInt(selected.value) === item.correct) {
+                    score++;
+                } else {
+                    mistakes.push(idx + 1);
+                }
+            }
+        });
+
+        if (unanswered) {
+            alert("Ти відповів не на всі запитання! Пропущені виділено помаранчевим.");
+            return;
+        }
+
+        const resBox = document.getElementById('final-result');
+        const scoreDisp = document.getElementById('score-display');
+        const mistList = document.getElementById('mistakes-list');
+
+        resBox.style.display = "block";
+        resBox.style.background = score > 15 ? "#e8f5e9" : "#fff3e0";
+        scoreDisp.innerText = `Твій результат: ${score} з ${questions.length}`;
+
+        if (mistakes.length > 0) {
+            mistList.innerHTML = `⚠️ Зверни увагу на речення №: ${mistakes.join(', ')}. <br>Там припущено помилки у виборі часу або допоміжного дієслова.`;
+        } else {
+            mistList.innerHTML = "🎉 Ідеально! Ти справжній майстер граматики.";
+            mistList.style.color = "#2e7d32";
+        }
+
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
