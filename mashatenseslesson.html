@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar Logic Test</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f4f8; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        .instructions { background: #e8f4fd; padding: 15px; border-left: 5px solid #3498db; margin-bottom: 25px; font-size: 0.95em; }
+        .quiz-item { margin-bottom: 25px; padding: 15px; border: 1px solid #edf2f7; border-radius: 10px; }
+        .q-text { font-weight: 600; font-size: 1.1em; display: block; margin-bottom: 12px; }
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        label { border: 1px solid #cbd5e0; padding: 10px; border-radius: 8px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; background: #fff; }
+        label:hover { background-color: #ebf8ff; border-color: #3182ce; }
+        input[type="radio"] { margin-right: 10px; }
+        button { display: block; width: 100%; padding: 15px; background: #2b6cb0; color: white; border: none; border-radius: 8px; font-size: 1.2em; font-weight: bold; cursor: pointer; margin-top: 30px; }
+        button:hover { background: #2c5282; }
+        #results { margin-top: 30px; padding: 20px; border-radius: 10px; display: none; text-align: center; }
+        .score { font-size: 1.8em; font-weight: bold; }
+        .mistakes { color: #e53e3e; margin-top: 10px; font-weight: 500; }
+        .unanswered { border: 2px solid #ed8936 !important; background: #fffaf0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Grammar Master: Action vs State ⚡</h1>
+    <div class="instructions">
+        <b>Завдання:</b> Обери правильний варіант. Уважно стеж за часом та за тим, чи є в реченні дія, чи опис стану.
+    </div>
+
+    <div id="quiz-box"></div>
+
+    <button onclick="checkResults()">Перевірити роботу</button>
+
+    <div id="results">
+        <div id="score-text" class="score"></div>
+        <div id="mistakes-text" class="mistakes"></div>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        { q: "Я не бачив її минулого тижня.", options: ["I wasn't see her", "I didn't saw her", "I didn't see her", "I wasn't seeing her"], correct: 2 },
+        { q: "Ти будеш вдома завтра о сьомій вечора?", options: ["Will you be at home?", "Will you at home?", "Do you will be at home?", "Are you will be at home?"], correct: 0 },
+        { q: "Чому він зараз не працює?", options: ["Why doesn't he work now?", "Why isn't he work now?", "Why isn't he working now?", "Why doesn't he working now?"], correct: 2 },
+        { q: "Вона зазвичай дуже ввічлива.", options: ["She is usually being polite", "She is usually polite", "She does usually polite", "She usually polite"], correct: 1 },
+        { q: "Ми гуляли в парку, коли почався дощ.", options: ["We walked in the park", "We were walk in the park", "We were walking in the park", "We was walking in the park"], correct: 2 },
+        { q: "Я обіцяю, що не запізнюся.", options: ["I promise I won't late", "I promise I won't be late", "I promise I'm not late", "I promise I don't late"], correct: 1 },
+        { q: "Твій тато працює в цьому офісі?", options: ["Is your dad work here?", "Does your dad work here?", "Is your dad working here?", "Does your dad works here?"], correct: 1 },
+        { q: "Вчора в цей час я летів у літаку.", options: ["I flew in a plane", "I was fly in a plane", "I was flying in a plane", "I did fly in a plane"], correct: 2 },
+        { q: "Це не здається мені гарною ідеєю.", options: ["It isn't seem good to me", "It doesn't seem good to me", "It isn't seeming good to me", "It doesn't seems good to me"], correct: 1 },
+        { q: "Вони не були готові до іспиту.", options: ["They didn't ready", "They weren't ready", "They weren't be ready", "They didn't be ready"], correct: 1 },
+        { q: "Ти будеш дивитися фільм завтра?", options: ["Will you watch the movie?", "Are you watch the movie?", "Do you will watch the movie?", "Will you be watch the movie?"], correct: 0 },
+        { q: "Я зараз не слухаю музику.", options: ["I don't listen to music now", "I'm not listen to music now", "I'm not listening to music now", "I don't listening to music now"], correct: 2 },
+        { q: "Він часто забуває свої ключі.", options: ["He is often forget keys", "He often forgets keys", "He often is forget keys", "He often forgetting keys"], correct: 1 },
+        { q: "Де ти був, коли я дзвонив?", options: ["Where did you were?", "Where were you?", "Where was you?", "Where did you be?"], correct: 1 },
+        { q: "Ми не будемо грати в теніс наступної суботи.", options: ["We won't play tennis", "We aren't play tennis", "We won't be play tennis", "We don't play tennis"], correct: 0 },
+        { q: "Ти впевнений, що це правда?", options: ["Do you sure?", "Are you sure?", "Is you sure?", "Are you sured?"], correct: 1 },
+        { q: "Вона вчила англійську весь вечір вчора.", options: ["She studied English", "She was study English", "She was studying English", "She did study English"], correct: 2 },
+        { q: "Я не хочу йти туди сьогодні.", options: ["I'm not want to go", "I don't want to go", "I'm not wanting to go", "I don't wanting to go"], correct: 1 },
+        { q: "Завтра о 10-й я буду здавати іспит.", options: ["I will take the exam", "I will be taking the exam", "I am take the exam", "I will be take the exam"], correct: 1 },
+        { q: "Хто це розбив вазу вчора?", options: ["Who was break the vase?", "Who did broke the vase?", "Who broke the vase?", "Who was breaking the vase?"], correct: 2 }
+    ];
+
+    const quizBox = document.getElementById('quiz-box');
+    questions.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'quiz-item';
+        div.id = `q-block-${index}`;
+        div.innerHTML = `
+            <span class="q-text">${index + 1}. ${item.q}</span>
+            <div class="options">
+                ${item.options.map((opt, i) => `
+                    <label><input type="radio" name="q${index}" value="${i}"> ${opt}</label>
+                `).join('')}
+            </div>
+        `;
+        quizBox.appendChild(div);
+    });
+
+    function checkResults() {
+        let score = 0;
+        let mistakes = [];
+        let allAnswered = true;
+
+        questions.forEach((item, index) => {
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            const block = document.getElementById(`q-block-${index}`);
+            
+            if (!selected) {
+                allAnswered = false;
+                block.classList.add('unanswered');
+            } else {
+                block.classList.remove('unanswered');
+                if (parseInt(selected.value) === item.correct) {
+                    score++;
+                } else {
+                    mistakes.push(index + 1);
+                }
+            }
+        });
+
+        if (!allAnswered) {
+            alert("Будь ласка, дай відповіді на всі запитання!");
+            return;
+        }
+
+        const resultsDiv = document.getElementById('results');
+        const scoreText = document.getElementById('score-text');
+        const mistakesText = document.getElementById('mistakes-text');
+
+        resultsDiv.style.display = "block";
+        scoreText.innerText = `Результат: ${score} з ${questions.length}`;
+        
+        if (mistakes.length > 0) {
+            mistakesText.innerText = `Знайдено помилки у номерах: ${mistakes.join(', ')}. Спробуй проаналізувати їх ще раз!`;
+            resultsDiv.style.background = "#fff5f5";
+        } else {
+            mistakesText.innerText = "Вітаю! Жодної помилки. Твоя база граматики значно покращилася!";
+            resultsDiv.style.background = "#f0fff4";
+            mistakesText.style.color = "#38a169";
+        }
+
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
