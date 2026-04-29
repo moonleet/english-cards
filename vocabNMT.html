@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NMT English Practice - Vocabulary</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f4f7f6;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .task-description {
+            font-style: italic;
+            margin-bottom: 20px;
+            color: #666;
+        }
+        .text-passage {
+            font-size: 18px;
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .gap {
+            font-weight: bold;
+            color: #3498db;
+            text-decoration: underline;
+        }
+        .options-grid {
+            margin-top: 30px;
+            display: grid;
+            gap: 20px;
+        }
+        .question {
+            background: #f9f9f9;
+            padding: 15px;
+            border-left: 5px solid #3498db;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .option {
+            background: white;
+            border: 1px solid #ccc;
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .correct-btn {
+            margin-top: 20px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #answers {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>English Practice: Vocabulary (NMT Style)</h2>
+    <p class="task-description">Read the text below. For questions (1—5) choose the correct answer (A, B, C or D).</p>
+
+    <div class="text-passage">
+        <p>
+            The Great Barrier Reef is the world's largest coral reef system. It is <strong>(1) <span class="gap">___</span></strong> in the Coral Sea, off the coast of Queensland, Australia. This natural wonder is so huge that it can be seen from outer space. It <strong>(2) <span class="gap">___</span></strong> of billions of tiny organisms, known as coral polyps. 
+        </p>
+        <p>
+            The reef supports a wide <strong>(3) <span class="gap">___</span></strong> of life, including many vulnerable or endangered species. Because of its environmental importance, the reef was <strong>(4) <span class="gap">___</span></strong> a World Heritage Site in 1981. However, environmentalists are worried because climate change is <strong>(5) <span class="gap">___</span></strong> a serious threat to its future.
+        </p>
+    </div>
+
+    <div class="options-grid">
+        <div class="question">
+            <strong>1.</strong>
+            <ul class="options-list">
+                <li class="option">A) placed</li>
+                <li class="option">B) located</li>
+                <li class="option">C) stayed</li>
+                <li class="option">D) settled</li>
+            </ul>
+        </div>
+
+        <div class="question">
+            <strong>2.</strong>
+            <ul class="options-list">
+                <li class="option">A) consists</li>
+                <li class="option">B) involves</li>
+                <li class="option">C) includes</li>
+                <li class="option">D) contains</li>
+            </ul>
+        </div>
+
+        <div class="question">
+            <strong>3.</strong>
+            <ul class="options-list">
+                <li class="option">A) difference</li>
+                <li class="option">B) variety</li>
+                <li class="option">C) amount</li>
+                <li class="option">D) collection</li>
+            </ul>
+        </div>
+
+        <div class="question">
+            <strong>4.</strong>
+            <ul class="options-list">
+                <li class="option">A) called</li>
+                <li class="option">B) known</li>
+                <li class="option">C) declared</li>
+                <li class="option">D) advertised</li>
+            </ul>
+        </div>
+
+        <div class="question">
+            <strong>5.</strong>
+            <ul class="options-list">
+                <li class="option">A) making</li>
+                <li class="option">B) doing</li>
+                <li class="option">C) posing</li>
+                <li class="option">D) giving</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="correct-btn" onclick="document.getElementById('answers').style.display='block'">Show Correct Answers</button>
+
+    <div id="answers">
+        <strong>Correct Answers:</strong>
+        <p>1 - B (located), 2 - A (consists), 3 - B (variety), 4 - C (declared), 5 - C (posing)</p>
+    </div>
+</div>
+
+</body>
+</html>
