@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active or Passive Voice Quiz</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #fdfdfd; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        .theory { font-size: 0.9em; color: #555; background: #f0f7ff; padding: 15px; border-radius: 8px; margin-bottom: 25px; }
+        .q-item { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .q-text { font-size: 1.1em; display: block; margin-bottom: 10px; }
+        input[type="text"] { border: 2px solid #ddd; border-radius: 5px; padding: 8px; width: 180px; font-size: 1em; color: #2980b9; font-weight: bold; }
+        input[type="text"]:focus { border-color: #3498db; outline: none; }
+        button { display: block; width: 100%; padding: 15px; background: #2c3e50; color: white; border: none; border-radius: 8px; font-size: 1.2em; cursor: pointer; margin-top: 20px; }
+        button:hover { background: #34495e; }
+        #results { margin-top: 25px; display: none; padding: 20px; border-radius: 8px; text-align: center; }
+        .correct { border-color: #27ae60 !important; color: #27ae60; }
+        .wrong { border-color: #e74c3c !important; color: #e74c3c; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Active or Passive? 🔄</h1>
+    <div class="theory">
+        <strong>Подсказка:</strong> Подумай, подлежащее <b>делает</b> действие или <b>принимает</b> его.<br>
+        <i>Present Simple:</i> do/does <b>VS</b> is/are + V3<br>
+        <i>Past Simple:</i> did <b>VS</b> was/were + V3
+    </div>
+
+    <div id="quiz">
+        <div class="q-item">1. Many people <input type="text" data-ans="visit"> the Eiffel Tower every year. (visit)</div>
+        <div class="q-item">2. The Eiffel Tower <input type="text" data-ans="is visited"> by millions of people. (visit)</div>
+        <div class="q-item">3. Last night, a thief <input type="text" data-ans="stole"> my neighbor's car. (steal)</div>
+        <div class="q-item">4. My neighbor's car <input type="text" data-ans="was stolen"> last night. (steal)</div>
+        <div class="q-item">5. Shakespeare <input type="text" data-ans="wrote"> "Romeo and Juliet". (write)</div>
+        <div class="q-item">6. "Romeo and Juliet" <input type="text" data-ans="was written"> by Shakespeare. (write)</div>
+        <div class="q-item">7. Nowadays, millions of emails <input type="text" data-ans="are sent"> every minute. (send)</div>
+        <div class="q-item">8. I <input type="text" data-ans="sent"> you an email an hour ago. (send)</div>
+        <div class="q-item">9. The chef <input type="text" data-ans="prepares"> a special dinner tonight. (prepare)</div>
+        <div class="q-item">10. The dinner <input type="text" data-ans="is prepared"> by a famous chef. (prepare)</div>
+        <div class="q-item">11. This house <input type="text" data-ans="was built"> in 1950. (build)</div>
+        <div class="q-item">12. My grandfather <input type="text" data-ans="built"> this house long ago. (build)</div>
+        <div class="q-item">13. Plastic bottles <input type="text" data-ans="pollute"> our oceans. (pollute)</div>
+        <div class="q-item">14. Our oceans <input type="text" data-ans="are polluted"> by plastic waste. (pollute)</div>
+        <div class="q-item">15. Tomorrow, the winner <input type="text" data-ans="will be announced"> by the judges. (announce)</div>
+    </div>
+
+    <button onclick="checkAnswers()">Проверить ответы</button>
+    <div id="results"></div>
+</div>
+
+<script>
+    function checkAnswers() {
+        const inputs = document.querySelectorAll('input');
+        let score = 0;
+        inputs.forEach(input => {
+            const userAnswer = input.value.trim().toLowerCase();
+            const correctAnswer = input.getAttribute('data-ans').toLowerCase();
+            if (userAnswer === correctAnswer) {
+                input.className = 'correct';
+                score++;
+            } else {
+                input.className = 'wrong';
+            }
+        });
+
+        const resDiv = document.getElementById('results');
+        resDiv.style.display = 'block';
+        resDiv.style.background = score > 10 ? '#e8f5e9' : '#fbe9e7';
+        resDiv.innerHTML = `<h3>Твой результат: ${score} из 15</h3><p>Красным выделены ошибки. Проверь их внимательно!</p>`;
+    }
+</script>
+
+</body>
+</html>
