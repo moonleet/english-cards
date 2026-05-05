@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active or Passive Voice Practice</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f7f6; padding: 30px; color: #333; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #1a237e; border-bottom: 3px solid #3f51b5; padding-bottom: 10px; }
+        .instruction { background: #e8eaf6; padding: 15px; border-radius: 8px; margin-bottom: 25px; font-size: 0.95em; }
+        .q-item { margin-bottom: 20px; font-size: 1.1em; line-height: 1.6; }
+        input[type="text"] { border: none; border-bottom: 2px solid #999; width: 180px; text-align: center; font-size: 1em; outline: none; color: #1a237e; font-weight: bold; }
+        input[type="text"]:focus { border-bottom-color: #3f51b5; }
+        button#submit-btn { display: block; width: 100%; padding: 18px; background: #1a237e; color: white; border: none; border-radius: 8px; font-size: 1.2em; font-weight: bold; cursor: pointer; margin-top: 30px; }
+        #final-result { margin-top: 30px; padding: 20px; border-radius: 8px; display: none; text-align: center; }
+        .summary-score { font-size: 1.5em; font-weight: bold; margin-bottom: 10px; }
+        .mistake-list { color: #d32f2f; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Active vs Passive: Level B1</h1>
+    <div class="instruction">
+        Розкрий дужки, поставивши дієслово у правильну форму (Active або Passive). 
+        <b>Звертай увагу на час:</b> Present, Past або Future.
+    </div>
+
+    <div id="quiz-container">
+        <div class="q-item">1. Every year, millions of smartphones <input type="text" id="q0" data-ans="are sold"> all over the world. (sell)</div>
+        <div class="q-item">2. Apple <input type="text" id="q1" data-ans="sells"> millions of smartphones every year. (sell)</div>
+        <div class="q-item">3. This bridge <input type="text" id="q2" data-ans="was built"> in 1890. (build)</div>
+        <div class="q-item">4. Workers <input type="text" id="q3" data-ans="built"> this bridge a long time ago. (build)</div>
+        <div class="q-item">5. I <input type="text" id="q4" data-ans="wrote"> three emails this morning. (write)</div>
+        <div class="q-item">6. These three emails <input type="text" id="q5" data-ans="were written"> this morning. (write)</div>
+        <div class="q-item">7. Coffee <input type="text" id="q6" data-ans="is grown"> in Brazil. (grow)</div>
+        <div class="q-item">8. Farmers in Brazil <input type="text" id="q7" data-ans="grow"> a lot of coffee. (grow)</div>
+        <div class="q-item">9. Someone <input type="text" id="q8" data-ans="stole"> my bike yesterday. (steal)</div>
+        <div class="q-item">10. My bike <input type="text" id="q9" data-ans="was stolen"> yesterday. (steal)</div>
+        <div class="q-item">11. A new hospital <input type="text" id="q10" data-ans="will be opened"> next month. (open)</div>
+        <div class="q-item">12. The Mayor <input type="text" id="q11" data-ans="will open"> a new hospital next month. (open)</div>
+        <div class="q-item">13. These photos <input type="text" id="q12" data-ans="were taken"> during our last trip. (take)</div>
+        <div class="q-item">14. My sister <input type="text" id="q13" data-ans="took"> these photos during our last trip. (take)</div>
+        <div class="q-item">15. English <input type="text" id="q14" data-ans="is spoken"> in many countries. (speak)</div>
+    </div>
+
+    <button id="submit-btn" onclick="checkWork()">Завершити тест</button>
+
+    <div id="final-result">
+        <div id="score-display" class="summary-score"></div>
+        <div id="mistakes-display" class="mistake-list"></div>
+    </div>
+</div>
+
+<script>
+    function checkWork() {
+        let score = 0;
+        let mistakes = [];
+        const total = 15;
+
+        for (let i = 0; i < total; i++) {
+            const input = document.getElementById('q' + i);
+            const userAnswer = input.value.trim().toLowerCase();
+            const correctAnswer = input.getAttribute('data-ans').toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                score++;
+            } else {
+                mistakes.push(i + 1);
+            }
+        }
+
+        const resArea = document.getElementById('final-result');
+        const scoreDisp = document.getElementById('score-display');
+        const mistDisp = document.getElementById('mistakes-display');
+
+        resArea.style.display = "block";
+        resArea.style.background = score === total ? "#e8f5e9" : "#fbe9e7";
+        
+        scoreDisp.innerText = "Твій результат: " + score + " з " + total;
+        
+        if (mistakes.length > 0) {
+            mistDisp.innerText = "Зверни увагу на речення №: " + mistakes.join(', ') + ". Спробуй ще раз!";
+        } else {
+            mistDisp.innerText = "Вітаю! Жодної помилки!";
+            mistDisp.style.color = "#2e7d32";
+        }
+        
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+</script>
+
+</body>
+</html>
