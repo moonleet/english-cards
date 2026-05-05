@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passive Voice & Reduced Passive</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f2f5; padding: 20px; color: #333; }
+        .container { max-width: 850px; margin: auto; background: white; padding: 30px; border-radius: 12px; shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #1a237e; border-bottom: 3px solid #3f51b5; padding-bottom: 10px; }
+        .theory { background: #e8eaf6; padding: 15px; border-radius: 8px; margin-bottom: 25px; font-size: 0.95em; line-height: 1.5; }
+        .quiz-item { margin-bottom: 25px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        .q-text { font-weight: bold; display: block; margin-bottom: 10px; color: #2c3e50; }
+        .options { display: grid; grid-template-columns: 1fr; gap: 8px; }
+        label { border: 1px solid #ccc; padding: 10px; border-radius: 6px; cursor: pointer; transition: 0.2s; background: #fff; }
+        label:hover { background: #f5f5f5; border-color: #3f51b5; }
+        input[type="radio"] { margin-right: 10px; }
+        button { display: block; width: 100%; padding: 15px; background: #3f51b5; color: white; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        #results { margin-top: 20px; padding: 20px; border-radius: 8px; display: none; text-align: center; font-weight: bold; }
+        .mistakes { color: #d32f2f; margin-top: 10px; text-align: left; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Passive Voice Challenge 🏛️</h1>
+    
+    <div class="theory">
+        <strong>Краткая шпаргалка для ученика:</strong><br>
+        1. <b>Full Passive (Полный):</b> "The book <u>was written</u> in 1920." (Есть глагол-связка <i>be</i>). Используется как основное сказуемое.<br>
+        2. <b>Reduced Passive (Сокращенный):</b> "The book <u>written</u> in 1920 is on the table." (Нет <i>be</i>). Работает как определение (какой?), заменяет связку "which was written".
+    </div>
+
+    <div id="quiz-box"></div>
+
+    <button onclick="checkResults()">Проверить работу</button>
+
+    <div id="results">
+        <div id="score-text"></div>
+        <div id="mistakes-list" class="mistakes"></div>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        { q: "Письмо, (отправленное) вчера, еще не пришло.", options: ["The letter sent yesterday...", "The letter was sent yesterday...", "The letter which sent yesterday...", "The letter is sent yesterday..."], correct: 0 },
+        { q: "Это письмо (было отправлено) вчера.", options: ["This letter sent yesterday.", "This letter was sent yesterday.", "This letter being sent yesterday.", "This letter is sent yesterday."], correct: 1 },
+        { q: "Машины, (сделанные) в Германии, очень надежные.", options: ["Cars are made in Germany...", "Cars made in Germany...", "Cars making in Germany...", "Cars were made in Germany..."], correct: 1 },
+        { q: "Эти машины (делают) в Германии.", options: ["These cars made in Germany.", "These cars are made in Germany.", "These cars were make in Germany.", "These cars are make in Germany."], correct: 1 },
+        { q: "Дом, (построенный) моим дедом, все еще стоит.", options: ["The house built by my grandfather...", "The house was built by my grandfather...", "The house which built by...", "The house builded by..."], correct: 0 },
+        { q: "Этот дом (был построен) в 1990 году.", options: ["This house built in 1990.", "This house was built in 1990.", "This house is built in 1990.", "This house was build in 1990."], correct: 1 },
+        { q: "Я видел фильм, (снятый) Спилбергом.", options: ["...film was directed by Spielberg.", "...film directed by Spielberg.", "...film directing by Spielberg.", "...film which directed by..."], correct: 1 },
+        { q: "Этот фильм (был снят) в Лондоне.", options: ["This film directed in London.", "This film was directed in London.", "This film was direct in London.", "This film is direct in London."], correct: 1 },
+        { q: "Студенты, (выбранные) для программы, едут в США.", options: ["Students chosen for the program...", "Students are chosen for the program...", "Students were chosen for the program...", "Students choosing for..."], correct: 0 },
+        { q: "Эти студенты (были выбраны) вчера.", options: ["These students chosen yesterday.", "These students were chosen yesterday.", "These students was chosen yesterday.", "These students were choose yesterday."], correct: 1 },
+        { q: "Проблема, (обсуждаемая) на встрече, очень важна.", options: ["The problem discussed...", "The problem was discussed...", "The problem is discussed...", "The problem which discussed..."], correct: 0 },
+        { q: "Эта проблема (обсуждалась) два часа.", options: ["This problem discussed for 2 hours.", "This problem was discussed for 2 hours.", "This problem is discussed for 2 hours.", "This problem were discussed for 2 hours."], correct: 1 },
+        { q: "Картина, (украденная) из музея, не найдена.", options: ["The painting stolen from the museum...", "The painting was stolen...", "The painting was steal...", "The painting which stolen..."], correct: 0 },
+        { q: "Картина (была украдена) ночью.", options: ["The painting stolen at night.", "The painting was stolen at night.", "The painting is stolen at night.", "The painting was steal at night."], correct: 1 },
+        { q: "План, (предложенный) директором, всем понравился.", options: ["The plan proposed by the director...", "The plan was proposed by...", "The plan which proposed...", "The plan is proposed by..."], correct: 0 }
+    ];
+
+    const quizBox = document.getElementById('quiz-box');
+    questions.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.className = 'quiz-item';
+        div.id = `q-${idx}`;
+        div.innerHTML = `
+            <span class="q-text">${idx + 1}. ${item.q}</span>
+            <div class="options">
+                ${item.options.map((opt, i) => `<label><input type="radio" name="q${idx}" value="${i}"> ${opt}</label>`).join('')}
+            </div>
+        `;
+        quizBox.appendChild(div);
+    });
+
+    function checkResults() {
+        let score = 0;
+        let mistakes = [];
+        questions.forEach((item, idx) => {
+            const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+            if (selected && parseInt(selected.value) === item.correct) {
+                score++;
+                document.getElementById(`q-${idx}`).style.borderColor = "#4caf50";
+            } else {
+                mistakes.push(idx + 1);
+                document.getElementById(`q-${idx}`).style.borderColor = "#f44336";
+            }
+        });
+
+        const resDiv = document.getElementById('results');
+        resDiv.style.display = "block";
+        document.getElementById('score-text').innerText = `Результат: ${score} из ${questions.length}`;
+        document.getElementById('mistakes-list').innerHTML = mistakes.length > 0 
+            ? `Ошибка в номерах: ${mistakes.join(', ')}. <br><small>Помни: если это описание (какой?), связка 'be' не нужна!</small>` 
+            : "Отлично! Ты видишь разницу между причастием и сказуемым.";
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>
