@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вежливость: Интерактивные карточки</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; flex-direction: column; align-items: center; padding: 40px; margin: 0; }
+        h1 { color: #1a237e; margin-bottom: 30px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 100%; max-width: 1200px; }
+        
+        /* Логика переворота */
+        .card { width: 100%; height: 180px; perspective: 1000px; cursor: pointer; }
+        .card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; border-radius: 12px; shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .card.flipped .card-inner { transform: rotateY(180deg); }
+        
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; border-radius: 12px; box-sizing: border-box; }
+        
+        .card-front { background-color: #ffffff; color: #1a237e; border: 2px solid #1a237e; font-size: 1.4em; font-weight: bold; }
+        .card-back { background-color: #1a237e; color: white; transform: rotateY(180deg); font-size: 1em; }
+        
+        .translation { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; color: #ffca28; }
+        .example { font-style: italic; font-size: 0.9em; opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+<h1>31–40 Вежливость 💡</h1>
+<div class="grid" id="grid"></div>
+
+<script>
+    const phrases = [
+        { eng: "After you", rus: "Прошу вас вперёд", ex: "Hold the door open and say: 'After you!'" },
+        { eng: "I appreciate it", rus: "Я ценю это", ex: "Thanks for your help, I really appreciate it." },
+        { eng: "That's very kind of you", rus: "Очень мило с вашей стороны", ex: "You bought me flowers? That's very kind of you!" },
+        { eng: "My pleasure", rus: "С удовольствием", ex: "- Thanks for the tea! - My pleasure." },
+        { eng: "Anytime", rus: "В любое время", ex: "- Thanks for the ride! - Anytime, mate!" },
+        { eng: "Could you help me out?", rus: "Можете мне помочь?", ex: "I'm lost. Could you help me out, please?" },
+        { eng: "Thanks a bunch", rus: "Огромное спасибо", ex: "You found my keys! Thanks a bunch!" },
+        { eng: "Sorry for the trouble", rus: "Извините за беспокойство", ex: "Sorry for the trouble, but could you move your car?" },
+        { eng: "No problem at all", rus: "Вообще без проблем", ex: "- Can I borrow your pen? - No problem at all!" },
+        { eng: "You're welcome", rus: "Пожалуйста", ex: "- Thank you for the gift. - You're welcome." }
+    ];
+
+    const grid = document.getElementById('grid');
+
+    phrases.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.onclick = () => card.classList.toggle('flipped');
+        
+        card.innerHTML = `
+            <div class="card-inner">
+                <div class="card-front">${item.eng}</div>
+                <div class="card-back">
+                    <div class="translation">${item.rus}</div>
+                    <div class="example"><b>Ex:</b> ${item.ex}</div>
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+</script>
+
+</body>
+</html>
